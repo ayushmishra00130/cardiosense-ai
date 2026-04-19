@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}CardioSense AI | Preventive Cardiac Intelligence{% endblock %}
+{% block page_id %}home{% endblock %}
+
+{% block content %}
+<section class="hero hero-home">
+    <div class="hero-inner">
+        <p class="hero-kicker">Preventive Cardiology Platform</p>
+        <h1>Professional AI-Driven Heart Risk Triage</h1>
+        <p class="hero-copy">
+            Screen modifiable risk factors, identify primary drivers, and generate a clinically structured summary in minutes.
+        </p>
+        <div class="hero-actions">
+            <a class="cta-btn" href="{{ url_for('assess') }}">Start Assessment</a>
+            <a class="ghost-btn" href="{{ url_for('results') }}">View Dashboard</a>
+        </div>
+    </div>
+</section>
+
+<section class="impact-grid">
+    <article class="impact-card">
+        <p class="impact-label">Assessment Depth</p>
+        <h2>3-Step Guided Intake</h2>
+        <p>Clinical vitals, symptoms, and lifestyle history captured in one validated workflow.</p>
+    </article>
+    <article class="impact-card">
+        <p class="impact-label">Clinical Explainability</p>
+        <h2>Primary Driver Visibility</h2>
+        <p>Every prediction includes an interpretable ranking of the strongest risk contributors.</p>
+    </article>
+    <article class="impact-card">
+        <p class="impact-label">Actionable Output</p>
+        <h2>Medical Summary PDF</h2>
+        <p>Export a one-page, hospital-style report with recommendations and heart-age metric.</p>
+    </article>
+</section>
+
+<section class="steps steps-home">
+    <article class="step-card">
+        <h3>Step 1</h3>
+        <p>Complete the multi-step questionnaire with validated physiologic ranges.</p>
+    </article>
+    <article class="step-card">
+        <h3>Step 2</h3>
+        <p>Generate calibrated risk prediction plus heart-age and explainable drivers.</p>
+    </article>
+    <article class="step-card">
+        <h3>Step 3</h3>
+        <p>Run what-if simulations and download a professional preventive summary.</p>
+    </article>
+</section>
+{% endblock %}

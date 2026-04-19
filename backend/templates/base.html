@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}CardioSense AI{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    {% block head_extras %}{% endblock %}
+</head>
+<body data-page="{% block page_id %}home{% endblock %}">
+<header class="topbar">
+    <div class="topbar-inner">
+        <a class="brand" href="{{ url_for('home') }}" aria-label="CardioSense AI home">
+            <span class="brand-mark">CS</span>
+            <span class="brand-name">CardioSense AI</span>
+        </a>
+
+        <nav class="nav-links" aria-label="Primary navigation">
+            <a href="{{ url_for('home') }}" class="{% if request.path == '/' %}is-active{% endif %}">Home</a>
+            <a href="{{ url_for('assess') }}" class="{% if request.path == '/assess' %}is-active{% endif %}">Assessment</a>
+            <a href="{{ url_for('results') }}" class="{% if request.path == '/results' %}is-active{% endif %}">Results</a>
+        </nav>
+
+        <a class="help-btn" href="{{ url_for('assess') }}">Start Assessment</a>
+    </div>
+</header>
+
+<main class="page-shell">
+    {% block content %}{% endblock %}
+</main>
+
+<footer class="site-footer">
+    <p class="footer-alert">If you are having a medical emergency, contact emergency services immediately.</p>
+</footer>
+
+{% block page_data %}{% endblock %}
+<script src="{{ url_for('static', filename='script.js') }}" defer></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>
