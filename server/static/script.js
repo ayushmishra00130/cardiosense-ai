@@ -124,6 +124,77 @@ function renderRecommendations(items) {
     });
 }
 
+function driverStatusForImpact(impactPercent) {
+    const value = Number(impactPercent) || 0;
+    if (value >= 40) {
+        return { label: "High", className: "high" };
+    }
+    if (value >= 22) {
+        return { label: "Moderate", className: "moderate" };
+    }
+    return { label: "Low", className: "low" };
+}
+
+function renderDriverStatuses(drivers) {
+    const list = byId("driver-status-list");
+    if (!list) {
+        return;
+    }
+
+    list.innerHTML = "";
+    (drivers || []).forEach((driver) => {
+        const row = document.createElement("li");
+        row.className = "driver-status-item";
+
+        const name = document.createElement("strong");
+        name.textContent = driver.label || "Driver";
+
+        const status = driverStatusForImpact(driver.impact_percent);
+        const pill = document.createElement("span");
+        pill.className = `driver-pill ${status.className}`;
+        pill.textContent = status.label;
+
+        row.appendChild(name);
+        row.appendChild(pill);
+        list.appendChild(row);
+    });
+}
+
+function hexToRgb(hex) {
+    const value = hex.replace("#", "");
+    const normalized = value.length === 3
+        ? value.split("").map((ch) => ch + ch).join("")
+        : value;
+
+    const intValue = Number.parseInt(normalized, 16);
+    return {
+        r: (intValue >> 16) & 255,
+        g: (intValue >> 8) & 255,
+        b: intValue & 255,
+    };
+}
+
+function rgbToHex(r, g, b) {
+    const channel = (value) => Math.max(0, Math.min(255, Math.round(value))).toString(16).padStart(2, "0");
+    return `#${channel(r)}${channel(g)}${channel(b)}`;
+}
+
+function interpolateHexColor(startHex, endHex, ratio) {
+    const t = Math.max(0, Math.min(1, Number(ratio) || 0));
+    const start = hexToRgb(startHex);
+    const end = hexToRgb(endHex);
+    return rgbToHex(
+        start.r + (end.r - start.r) * t,
+        start.g + (end.g - start.g) * t,
+        start.b + (end.b - start.b) * t
+    );
+}
+
+function setSimulationAccent(probability) {
+    const accent = interpolateHexColor("#2f6a9b", "#d2833c", probability);
+    document.documentElement.style.setProperty("--sim-accent", accent);
+}
+
 function gaugeColorForProbability(probability) {
     if (probability < 0.35) {
         return "#2f8d62";
@@ -163,9 +234,9 @@ function registerGaugePlugin() {
             ctx.save();
             ctx.textAlign = "center";
             ctx.fillStyle = "#103252";
-            ctx.font = `800 ${valueSize}px Manrope`;
+            ctx.font = `800 ${valueSize}px Plus Jakarta Sans`;
             ctx.fillText(`${value.toFixed(1)}%`, x, y);
-            ctx.font = `700 ${labelSize}px Manrope`;
+            ctx.font = `700 ${labelSize}px Plus Jakarta Sans`;
             ctx.fillStyle = "#4a6681";
             ctx.fillText("Estimated Risk", x, y + labelSize + 7);
             ctx.restore();
@@ -526,6 +597,8 @@ function initResultsPage() {
         setText("risk-probability", `${(Number(prediction.risk_probability) * 100).toFixed(1)}%`);
         setText("heart-age", `${prediction.heart_age} yrs`);
         setText("risk-summary", prediction.risk_summary || "");
+        renderDriverStatuses(prediction.primary_drivers || []);
+        setSimulationAccent(prediction.risk_probability);
 
         // Keep recommendations tied to original assessment input, not simulation tweaks.
         if (mode === "simulation") {

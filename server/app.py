@@ -1,5 +1,6 @@
 import os
 import pickle
+import secrets
 from datetime import datetime
 from io import BytesIO
 from pathlib import Path
@@ -143,12 +144,20 @@ def download_report():
     except PayloadValidationError as exc:
         return _error_response(exc)
 
+    risk_percent = round(float(prediction["risk_probability"]) * 100.0, 1)
+    gauge_fill_percent = max(2.0, min(100.0, risk_percent))
+    assessment_id = f"CS-{datetime.utcnow():%Y}-{secrets.randbelow(10000):04d}"
+
     report_context = {
         "generated_on": datetime.utcnow().strftime("%d %b %Y %H:%M UTC"),
+        "assessment_id": assessment_id,
         "payload": validated_payload,
         "prediction": prediction,
         "drivers": prediction["primary_drivers"],
         "recommendations": prediction["recommendations"],
+        "risk_percent": risk_percent,
+        "gauge_fill_percent": gauge_fill_percent,
+        "gauge_rest_percent": round(100.0 - gauge_fill_percent, 1),
     }
 
     html = render_template("report_pdf.html", report=report_context)
