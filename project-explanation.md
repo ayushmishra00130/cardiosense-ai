@@ -18,26 +18,30 @@ Important: this is a screening support tool, not a clinical diagnosis system.
 The system is organized into three runtime layers:
 
 1. Flask web app and APIs
-- File: backend/app.py
+1. Flask web app and APIs
+- File: server/app.py
 - Serves pages: /, /assess, /results
 - Exposes APIs: /api/v1/predict, /api/v1/latest-result, /api/v1/report
 
 2. ML and risk logic
-- File: backend/model.py
+2. ML and risk logic
+- File: server/model.py
 - Handles payload validation, feature engineering, calibration, risk banding, explainability, and recommendations
 
 3. Training pipeline
-- File: backend/train_model.py
-- Trains and exports backend/model.pkl
+3. Training pipeline
+- File: server/train_model.py
+- Trains and exports server/model.pkl
 
 UI assets are centralized in:
-- backend/templates/
-- backend/static/
+UI assets are centralized in:
+- server/templates/
+- server/static/
 
 ## 3) Data and target
 
 Dataset:
-- backend/heart.csv
+- server/heart.csv
 
 Notes:
 - Label column in dataset is num
@@ -84,9 +88,7 @@ The report includes:
 From project root:
 
 ```powershell
-cd backend
 python -m pip install -r requirements.txt
-python train_model.py
 python app.py
 ```
 

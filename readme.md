@@ -11,20 +11,18 @@ It provides:
 
 ## Project Structure
 
-- backend/app.py: Flask routes and API endpoints
-- backend/model.py: validation, feature engineering, calibration, explainability, recommendations
-- backend/train_model.py: training pipeline that saves model.pkl
-- backend/templates/: Home, Assessment, Results, PDF templates
-- backend/static/: shared CSS/JS for MPA UI behavior
+- server/app.py: Flask routes and API endpoints
+- server/model.py: validation, feature engineering, calibration, explainability, recommendations
+- server/train_model.py: training pipeline that saves model.pkl
+- server/templates/: Home, Assessment, Results, PDF templates
+- server/static/: shared CSS/JS for MPA UI behavior
 
 ## Setup
 
 From project root:
 
 ```powershell
-cd backend
 python -m pip install -r requirements.txt
-python train_model.py
 python app.py
 ```
 
@@ -49,7 +47,7 @@ Legacy compatibility alias:
 
 ## Data and Modeling Notes
 
-- Dataset: backend/heart.csv
+- Dataset: server/heart.csv
 - Model pipeline: preprocessing + RandomForestClassifier
 - Input validation includes Biological Outlier checks for age, blood pressure, and cholesterol
 - Final risk score is calibrated from model output with clinical context adjustments
@@ -63,7 +61,6 @@ This project is a computational screening support tool and does not replace diag
 If dependencies fail to install:
 
 ```powershell
-cd backend
 python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
 ```
@@ -71,6 +68,6 @@ python -m pip install -r requirements.txt
 If model file is missing:
 
 ```powershell
-cd backend
+cd server
 python train_model.py
 ```

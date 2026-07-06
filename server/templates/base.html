@@ -10,18 +10,15 @@
 <body data-page="{% block page_id %}home{% endblock %}">
 <header class="topbar">
     <div class="topbar-inner">
-        <a class="brand" href="{{ url_for('home') }}" aria-label="CardioSense AI home">
-            <span class="brand-mark">CS</span>
-            <span class="brand-name">CardioSense AI</span>
-        </a>
-
         <nav class="nav-links" aria-label="Primary navigation">
             <a href="{{ url_for('home') }}" class="{% if request.path == '/' %}is-active{% endif %}">Home</a>
+            <span class="nav-separator" aria-hidden="true">|</span>
             <a href="{{ url_for('assess') }}" class="{% if request.path == '/assess' %}is-active{% endif %}">Assessment</a>
-            <a href="{{ url_for('results') }}" class="{% if request.path == '/results' %}is-active{% endif %}">Results</a>
+            <span class="nav-separator" aria-hidden="true">|</span>
+            <a href="{{ url_for('results') }}" class="{% if request.path == '/results' %}is-active{% endif %}">Result</a>
+            <span class="nav-separator" aria-hidden="true">|</span>
+            <a href="{{ url_for('assess') }}" class="{% if request.path == '/assess' %}is-active{% endif %}">Start Assessment</a>
         </nav>
-
-        <a class="help-btn" href="{{ url_for('assess') }}">Start Assessment</a>
     </div>
 </header>
 
